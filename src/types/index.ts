@@ -149,6 +149,7 @@ export interface UserSession {
   username: string;
   name: string;
   avatarUrl: string;
+  email?: string;
   savedProjectIds: string[];
   savedIdeaIds: string[];
   privateEvaluations: Project[];

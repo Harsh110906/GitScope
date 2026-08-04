@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { LandingView } from './components/LandingView';
@@ -14,6 +14,7 @@ import { AuthModal, AuthMode, AuthReason } from './components/AuthModal';
 
 import { Project, UserSession, ProfileEvaluation } from './types';
 import { fetchGithubUserProfile } from './services/githubService';
+import { getCurrentSession, onAuthStateChange, signOut } from './services/authService';
 
 const FREE_SEARCH_LIMIT = 3;
 
@@ -54,6 +55,77 @@ export function App() {
   const [comparedProjects, setComparedProjects] = useState<Project[]>([]);
   const [savedProjects, setSavedProjects] = useState<Project[]>([]);
   const [privateEvaluations, setPrivateEvaluations] = useState<Project[]>([]);
+
+  // Supabase Auth Session Listener
+  useEffect(() => {
+    // 1. Fetch initial session on mount
+    getCurrentSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        syncUserSession(session.user);
+      }
+    });
+
+    // 2. Subscribe to auth state changes across tabs / login / logout
+    const { data: { subscription } } = onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        syncUserSession(session.user);
+      } else {
+        setUserSession(prev => ({
+          ...prev,
+          isAuthenticated: false,
+          username: '',
+          name: '',
+          avatarUrl: '',
+          email: undefined
+        }));
+        setCurrentProfile(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const syncUserSession = (user: any) => {
+    const meta = user.user_metadata || {};
+    const email = user.email || '';
+    const emailPrefix = email ? email.split('@')[0] : 'developer';
+    
+    const name = meta.full_name || meta.name || meta.preferred_username || emailPrefix;
+    const username = meta.preferred_username || meta.user_name || emailPrefix;
+    const avatarUrl = meta.avatar_url || meta.picture || '';
+
+    setUserSession(prev => ({
+      ...prev,
+      isAuthenticated: true,
+      username,
+      name,
+      avatarUrl,
+      email
+    }));
+
+    // If user has a GitHub username, attempt to load GitHub profile statistics
+    if (username && username !== 'developer') {
+      fetchGithubUserProfile(username).then(prof => {
+        if (prof) setCurrentProfile(prof);
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    setUserSession(prev => ({
+      ...prev,
+      isAuthenticated: false,
+      username: '',
+      name: '',
+      avatarUrl: '',
+      email: undefined
+    }));
+    setCurrentProfile(null);
+    setActiveTab('landing');
+  };
 
   // Search Gatekeeper Check
   const handleSearchAttempt = (): boolean => {
@@ -144,25 +216,6 @@ export function App() {
     setActiveTab('dashboard');
   };
 
-  const handleUserLogin = async (userInfo: { username: string; email?: string; provider?: string }) => {
-    const uname = userInfo.username || 'developer';
-    const profile = await fetchGithubUserProfile(uname);
-    
-    setUserSession({
-      isAuthenticated: true,
-      username: profile?.username || uname,
-      name: profile?.name || uname,
-      avatarUrl: profile?.avatarUrl || `https://github.com/${uname}.png`,
-      savedProjectIds: userSession.savedProjectIds,
-      savedIdeaIds: userSession.savedIdeaIds,
-      privateEvaluations: userSession.privateEvaluations
-    });
-
-    if (profile) {
-      setCurrentProfile(profile);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-gh-bg text-gh-fg font-sans">
       
@@ -172,6 +225,7 @@ export function App() {
         setActiveTab={setActiveTab}
         userSession={userSession}
         onOpenAuth={handleOpenAuth}
+        onLogout={handleLogout}
         savedCount={userSession.savedProjectIds.length + userSession.savedIdeaIds.length}
       />
 
@@ -285,7 +339,6 @@ export function App() {
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
-        onLogin={handleUserLogin}
         initialMode={authModalMode}
         reason={authModalReason}
       />
