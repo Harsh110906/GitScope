@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Search, UserCheck, Lightbulb, Bookmark, Lock, GitBranch, Layers, Sparkles, ChevronDown, LogOut, User
+  Search, UserCheck, Lightbulb, Bookmark, Lock, Stethoscope, Layers, Sparkles, ChevronDown, LogOut, User
 } from 'lucide-react';
 import { UserSession } from '../types';
 import { AuthMode } from './AuthModal';
@@ -52,7 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="flex items-center gap-2.5 text-gh-fg hover:opacity-80 transition-opacity"
           >
             <div className="w-8 h-8 rounded-md bg-gh-accent flex items-center justify-center">
-              <GitBranch className="w-4.5 h-4.5 text-white" />
+              <Stethoscope className="w-4.5 h-4.5 text-white" />
             </div>
             <span className="font-semibold text-base tracking-tight hidden sm:block">
               GitScope
