@@ -138,10 +138,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             <div className="bg-yellow-400/10 border border-yellow-400/25 rounded-md p-3.5 space-y-1.5">
               <div className="flex items-center gap-2 font-semibold text-yellow-400 text-xs">
                 <Lock className="w-4 h-4 shrink-0" />
-                <span>You've reached your 3 free searches limit</span>
+                <span>Your daily quota of 3 free searches has ended</span>
               </div>
               <p className="text-xs text-gh-fgMuted leading-relaxed">
-                Join for free or sign in to unlock unlimited project searches, AI portfolio evaluations, and repository comparisons.
+                You've used all 3 free searches for today. Please sign in or create a free account to unlock unlimited searches, AI portfolio evaluations, and repository comparisons.
               </p>
             </div>
           )}

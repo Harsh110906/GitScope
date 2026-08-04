@@ -11,12 +11,38 @@ import { PersonalizedRecommenderView } from './components/PersonalizedRecommende
 import { ProjectCompareMatrix } from './components/ProjectCompareMatrix';
 import { SavedDashboardView } from './components/SavedDashboardView';
 import { AuthModal, AuthMode, AuthReason } from './components/AuthModal';
+import { SearchQuotaToast } from './components/SearchQuotaToast';
 
 import { Project, UserSession, ProfileEvaluation } from './types';
 import { fetchGithubUserProfile } from './services/githubService';
 import { getCurrentSession, onAuthStateChange, signOut } from './services/authService';
 
-const FREE_SEARCH_LIMIT = 3;
+const DAILY_FREE_SEARCH_LIMIT = 3;
+
+const getTodayDateKey = (): string => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+};
+
+const getDailySearchCount = (): number => {
+  try {
+    const raw = localStorage.getItem('gitscope_daily_search');
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.date === getTodayDateKey()) {
+        return typeof parsed.count === 'number' ? parsed.count : 0;
+      }
+    }
+  } catch (e) {}
+  return 0;
+};
+
+const saveDailySearchCount = (count: number) => {
+  try {
+    const data = { date: getTodayDateKey(), count };
+    localStorage.setItem('gitscope_daily_search', JSON.stringify(data));
+  } catch (e) {}
+};
 
 export function App() {
   const [activeTab, setActiveTab] = useState<string>('landing');
@@ -34,15 +60,8 @@ export function App() {
 
   const [currentProfile, setCurrentProfile] = useState<ProfileEvaluation | null>(null);
 
-  // Anonymous Search Counter (persisted in localStorage)
-  const [searchCount, setSearchCount] = useState<number>(() => {
-    try {
-      const saved = localStorage.getItem('gitscope_search_count');
-      return saved ? parseInt(saved, 10) || 0 : 0;
-    } catch {
-      return 0;
-    }
-  });
+  // Daily Anonymous Search Counter (persisted in localStorage with date key)
+  const [searchCount, setSearchCount] = useState<number>(() => getDailySearchCount());
 
   // Auth modal states
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -127,22 +146,22 @@ export function App() {
     setActiveTab('landing');
   };
 
-  // Search Gatekeeper Check
+  // Daily Search Gatekeeper Check
   const handleSearchAttempt = (): boolean => {
     if (userSession.isAuthenticated) return true;
-    if (searchCount >= FREE_SEARCH_LIMIT) {
+
+    const currentDailyCount = getDailySearchCount();
+
+    if (currentDailyCount >= DAILY_FREE_SEARCH_LIMIT) {
       setAuthModalReason('limit_reached');
       setAuthModalMode('signup');
       setIsAuthModalOpen(true);
       return false;
     }
-    const newCount = searchCount + 1;
+
+    const newCount = currentDailyCount + 1;
+    saveDailySearchCount(newCount);
     setSearchCount(newCount);
-    try {
-      localStorage.setItem('gitscope_search_count', newCount.toString());
-    } catch (e) {
-      // Storage unavailable fallback
-    }
     return true;
   };
 
@@ -270,6 +289,7 @@ export function App() {
         {activeTab === 'precheck' && (
           <PrivatePreCheckView
             onSaveEvaluation={handleSavePrivatePreCheck}
+            onSearchAttempt={handleSearchAttempt}
           />
         )}
 
@@ -277,6 +297,7 @@ export function App() {
           <ProfileAnalyzerView
             currentUsername={userSession.username}
             onNavigateToRecommender={() => setActiveTab('recommender')}
+            onSearchAttempt={handleSearchAttempt}
             onProfileLoaded={(prof) => {
               setCurrentProfile(prof);
               if (!userSession.isAuthenticated) {
@@ -341,6 +362,13 @@ export function App() {
         onClose={() => setIsAuthModalOpen(false)}
         initialMode={authModalMode}
         reason={authModalReason}
+      />
+
+      {/* LANDING BOTTOM-RIGHT FLOATING TOAST (3 seconds auto-fade) */}
+      <SearchQuotaToast
+        isAuthenticated={userSession.isAuthenticated}
+        remainingSearches={Math.max(0, DAILY_FREE_SEARCH_LIMIT - searchCount)}
+        onOpenAuth={() => handleOpenAuth('signup')}
       />
 
     </div>

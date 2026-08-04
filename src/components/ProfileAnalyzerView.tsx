@@ -8,10 +8,11 @@ interface ProfileAnalyzerViewProps {
   currentUsername: string;
   onNavigateToRecommender: () => void;
   onProfileLoaded?: (profile: ProfileEvaluation) => void;
+  onSearchAttempt?: () => boolean;
 }
 
 export const ProfileAnalyzerView: React.FC<ProfileAnalyzerViewProps> = ({
-  currentUsername, onNavigateToRecommender, onProfileLoaded
+  currentUsername, onNavigateToRecommender, onProfileLoaded, onSearchAttempt
 }) => {
   const [handle, setHandle] = useState(currentUsername || '');
   const [profile, setProfile] = useState<ProfileEvaluation | null>(null);
@@ -38,7 +39,9 @@ export const ProfileAnalyzerView: React.FC<ProfileAnalyzerViewProps> = ({
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (handle.trim()) load(handle.trim());
+    if (!handle.trim()) return;
+    if (onSearchAttempt && !onSearchAttempt()) return;
+    load(handle.trim());
   };
 
   return (

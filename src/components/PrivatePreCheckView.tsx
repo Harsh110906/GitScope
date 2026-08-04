@@ -5,9 +5,10 @@ import { evaluatePrivatePreCheck } from '../services/aiIntelligence';
 
 interface PrivatePreCheckViewProps {
   onSaveEvaluation: (project: Project) => void;
+  onSearchAttempt?: () => boolean;
 }
 
-export const PrivatePreCheckView: React.FC<PrivatePreCheckViewProps> = ({ onSaveEvaluation }) => {
+export const PrivatePreCheckView: React.FC<PrivatePreCheckViewProps> = ({ onSaveEvaluation, onSearchAttempt }) => {
   const [projectName, setProjectName] = useState('');
   const [domain, setDomain] = useState<DomainCategory>('AI & Machine Learning');
   const [description, setDescription] = useState('');
@@ -26,6 +27,7 @@ export const PrivatePreCheckView: React.FC<PrivatePreCheckViewProps> = ({ onSave
   const handleRun = (e: React.FormEvent) => {
     e.preventDefault();
     if (!projectName.trim()) return;
+    if (onSearchAttempt && !onSearchAttempt()) return;
     setIsAnalyzing(true);
     setTimeout(() => {
       setEvaluation(evaluatePrivatePreCheck({ projectName, domain, description, techStack, hasTests, hasDocs, hasDeployment }));
