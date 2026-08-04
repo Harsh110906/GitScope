@@ -209,32 +209,18 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               <span>Continue with GitHub</span>
             </button>
 
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => handleSocialLogin('google')}
-                disabled={isSubmitting || socialLoading !== null}
-                className="flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-gh-bg hover:bg-gh-card text-gh-fg font-medium text-xs border border-gh-borderMuted transition-colors disabled:opacity-50"
-              >
-                {socialLoading === 'google' ? (
-                  <div className="w-3.5 h-3.5 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Globe className="w-3.5 h-3.5 text-blue-400" />
-                )}
-                <span>Google</span>
-              </button>
-              <button
-                onClick={() => handleSocialLogin('apple')}
-                disabled={isSubmitting || socialLoading !== null}
-                className="flex items-center justify-center gap-2 px-3 py-2 rounded-md bg-gh-bg hover:bg-gh-card text-gh-fg font-medium text-xs border border-gh-borderMuted transition-colors disabled:opacity-50"
-              >
-                {socialLoading === 'apple' ? (
-                  <div className="w-3.5 h-3.5 border-2 border-gh-fgSubtle border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Globe className="w-3.5 h-3.5 text-gh-fgSubtle" />
-                )}
-                <span>Apple</span>
-              </button>
-            </div>
+            <button
+              onClick={() => handleSocialLogin('google')}
+              disabled={isSubmitting || socialLoading !== null}
+              className="w-full flex items-center justify-center gap-2.5 px-4 py-2 rounded-md bg-gh-bg hover:bg-gh-card text-gh-fg font-medium text-xs border border-gh-borderMuted transition-colors disabled:opacity-50"
+            >
+              {socialLoading === 'google' ? (
+                <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <Globe className="w-4 h-4 text-blue-400" />
+              )}
+              <span>Continue with Google</span>
+            </button>
           </div>
 
           {/* Divider */}

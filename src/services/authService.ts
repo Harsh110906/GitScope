@@ -1,7 +1,7 @@
 import { supabase } from './supabaseClient';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 
-export type OAuthProvider = 'github' | 'google' | 'apple';
+export type OAuthProvider = 'github' | 'google';
 
 export async function signUpWithEmail(email: string, password: string) {
   return await supabase.auth.signUp({
