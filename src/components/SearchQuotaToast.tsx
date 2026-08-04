@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Sparkles, X, Lock } from 'lucide-react';
 
 interface SearchQuotaToastProps {
@@ -7,6 +7,8 @@ interface SearchQuotaToastProps {
   onOpenAuth: () => void;
 }
 
+const DISPLAY_DURATION_MS = 5000; // 5 seconds display time
+
 export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
   isAuthenticated,
   remainingSearches,
@@ -14,50 +16,74 @@ export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const unmountTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const startDismissTimer = () => {
+    clearDismissTimers();
+
+    // Fade out after 5 seconds
+    hideTimerRef.current = setTimeout(() => {
+      setIsVisible(false);
+      // Remove from DOM after fade animation (500ms) finishes
+      unmountTimerRef.current = setTimeout(() => {
+        setIsRendered(false);
+      }, 500);
+    }, DISPLAY_DURATION_MS);
+  };
+
+  const clearDismissTimers = () => {
+    if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
+    if (unmountTimerRef.current) clearTimeout(unmountTimerRef.current);
+  };
 
   useEffect(() => {
-    // Only show for unauthenticated guest visitors
     if (isAuthenticated) {
       setIsVisible(false);
       setIsRendered(false);
       return;
     }
 
-    // Show toast on mount
     setIsRendered(true);
-    // Slight delay to trigger slide-up transition
-    const showTimer = setTimeout(() => {
+    // Slide up into view
+    const mountTimer = setTimeout(() => {
       setIsVisible(true);
+      startDismissTimer();
     }, 100);
 
-    // Auto-fade / dismiss after 3 seconds
-    const hideTimer = setTimeout(() => {
-      setIsVisible(false);
-    }, 3100);
-
-    // Unrender from DOM after fade-out transition completes (3.6s total)
-    const unmountTimer = setTimeout(() => {
-      setIsRendered(false);
-    }, 3600);
-
     return () => {
-      clearTimeout(showTimer);
-      clearTimeout(hideTimer);
-      clearTimeout(unmountTimer);
+      clearTimeout(mountTimer);
+      clearDismissTimers();
     };
   }, [isAuthenticated]);
+
+  // Handle mouse enter (pause timer) and mouse leave (resume 5s timer)
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+    clearDismissTimers();
+    setIsVisible(true); // Keep fully visible while hovered
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    startDismissTimer();
+  };
 
   if (!isRendered || isAuthenticated) return null;
 
   return (
     <div
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       className={`fixed bottom-5 right-5 z-40 max-w-sm w-full transition-all duration-500 ease-out transform ${
         isVisible
           ? 'translate-y-0 opacity-100 scale-100'
           : 'translate-y-4 opacity-0 scale-95 pointer-events-none'
       }`}
     >
-      <div className="bg-gh-canvas/95 backdrop-blur-md border border-gh-border rounded-lg shadow-2xl p-3.5 flex items-start gap-3">
+      <div className="bg-gh-canvas/95 backdrop-blur-md border border-gh-border rounded-lg shadow-2xl p-3.5 flex items-start gap-3 hover:border-gh-accent/50 transition-colors">
         <div className="w-8 h-8 rounded-md bg-gh-accent/15 flex items-center justify-center text-gh-accent shrink-0 mt-0.5">
           <Sparkles className="w-4.5 h-4.5" />
         </div>
@@ -71,7 +97,11 @@ export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
               </span>
             </span>
             <button
-              onClick={() => setIsVisible(false)}
+              onClick={() => {
+                clearDismissTimers();
+                setIsVisible(false);
+                setTimeout(() => setIsRendered(false), 500);
+              }}
               className="p-1 text-gh-fgMuted hover:text-gh-fg rounded hover:bg-gh-card transition-colors"
               title="Close notification"
             >
@@ -86,6 +116,7 @@ export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
           <div className="pt-1 flex items-center justify-between">
             <button
               onClick={() => {
+                clearDismissTimers();
                 setIsVisible(false);
                 onOpenAuth();
               }}
@@ -94,7 +125,9 @@ export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
               <Lock className="w-3 h-3" />
               Sign in for unlimited
             </button>
-            <span className="text-[10px] text-gh-fgSubtle">Fades in 3s</span>
+            <span className="text-[10px] text-gh-fgSubtle">
+              {isHovered ? 'Paused on hover' : 'Fades in 5s'}
+            </span>
           </div>
         </div>
       </div>
