@@ -62,13 +62,13 @@ export const LandingView: React.FC<LandingViewProps> = ({
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-16 lg:py-24">
           <div className="max-w-3xl">
             <h1 className="text-3xl sm:text-5xl font-bold text-gh-fg tracking-tight leading-tight mb-4">
-              Find, analyze, and compare
+              Find, analyze, and inspect
               <br />
-              <span className="text-gh-accent">GitHub projects</span> with AI
+              <span className="text-gh-accent">GitHub repositories</span> with AI Intelligence
             </h1>
 
             <p className="text-gh-fgMuted text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
-              GitScope scores repositories across originality, technical depth, and portfolio impact. Get domain rankings, pre-release evaluations, and personalized recommendations.
+              GitScope Repository Intelligence generates multi-pillar reports covering documentation, code organization, testing maturity, maintenance activity, advisory security, and personalized contribution matching.
             </p>
 
             {/* Search */}
@@ -79,7 +79,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   type="text"
                   value={queryInput}
                   onChange={(e) => setQueryInput(e.target.value)}
-                  placeholder="Search by topic or paste a GitHub repo URL..."
+                  placeholder="Paste GitHub repository URL (e.g. facebook/react) or search topic..."
                   className="flex-1 bg-transparent text-sm text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1.5"
                 />
                 <button
@@ -87,20 +87,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   className="gh-btn-primary shrink-0"
                 >
                   <Search className="w-3.5 h-3.5" />
-                  Search
+                  Analyze / Search
                 </button>
               </div>
             </form>
 
             <div className="flex flex-wrap items-center gap-2 text-[13px]">
-              <span className="text-gh-fgSubtle">Try:</span>
-              {quickTopics.map((t, i) => (
+              <span className="text-gh-fgSubtle">Try repos:</span>
+              {['https://github.com/facebook/react', 'https://github.com/expressjs/express', 'AI chatbot'].map((t, i) => (
                 <button
                   key={i}
                   onClick={() => handleTopicClick(t)}
-                  className="px-2.5 py-1 rounded-md bg-gh-card border border-gh-border text-gh-fgMuted hover:text-gh-accent hover:border-gh-accent transition-colors"
+                  className="px-2.5 py-1 rounded-md bg-gh-card border border-gh-border text-gh-fgMuted hover:text-gh-accent hover:border-gh-accent transition-colors font-mono text-xs"
                 >
-                  {t}
+                  {t.replace('https://github.com/', '')}
                 </button>
               ))}
             </div>

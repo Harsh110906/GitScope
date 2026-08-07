@@ -22,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { id: 'search', label: 'Explore', icon: Search },
+    { id: 'intelligence', label: 'Intelligence', icon: Sparkles },
     { id: 'suggestions', label: 'Ideas', icon: Lightbulb },
     { id: 'precheck', label: 'Pre-Check', icon: Lock },
     { id: 'profile', label: 'Profile', icon: UserCheck },

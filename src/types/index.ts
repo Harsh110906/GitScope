@@ -153,4 +153,5 @@ export interface UserSession {
   savedProjectIds: string[];
   savedIdeaIds: string[];
   privateEvaluations: Project[];
+  savedIntelligenceReports?: import('./repoIntelligenceTypes').RepositoryIntelligenceReport[];
 }

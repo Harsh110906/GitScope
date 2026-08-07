@@ -3,6 +3,7 @@ import { Search, Star, GitFork, Grid, List, ArrowUpDown, Layers, Bookmark, Exter
 import { Project, DomainCategory, FilterOptions } from '../types';
 import { searchGithubProjects } from '../services/githubService';
 import { expandSearchIntent } from '../services/aiIntelligence';
+import { parseAndValidateGithubUrl } from '../services/githubUrlParser';
 
 interface SearchDiscoveryViewProps {
   initialQuery?: string;
@@ -15,11 +16,12 @@ interface SearchDiscoveryViewProps {
   searchCount?: number;
   onSearchAttempt?: () => boolean;
   onOpenAuth?: (mode?: 'signin' | 'signup') => void;
+  onAnalyzeUrl?: (url: string) => void;
 }
 
 export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
   initialQuery = '', onSelectProject, onCompareProject, onToggleSaveProject, savedProjectIds, comparedProjectIds,
-  isAuthenticated = false, searchCount = 0, onSearchAttempt, onOpenAuth
+  isAuthenticated = false, searchCount = 0, onSearchAttempt, onOpenAuth, onAnalyzeUrl
 }) => {
   const [searchTerm, setSearchTerm] = useState(initialQuery);
   const [intentChips, setIntentChips] = useState<string[]>([]);
@@ -50,6 +52,11 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
     if (onSearchAttempt) {
       const allowed = onSearchAttempt();
       if (!allowed) return;
+    }
+    const urlCheck = parseAndValidateGithubUrl(searchTerm);
+    if (urlCheck.valid && onAnalyzeUrl) {
+      onAnalyzeUrl(searchTerm);
+      return;
     }
     executeSearch(searchTerm, filters.domain);
   };

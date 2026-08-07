@@ -10,10 +10,14 @@ import { ProjectSuggestionsView } from './components/ProjectSuggestionsView';
 import { PersonalizedRecommenderView } from './components/PersonalizedRecommenderView';
 import { ProjectCompareMatrix } from './components/ProjectCompareMatrix';
 import { SavedDashboardView } from './components/SavedDashboardView';
+import { RepositoryIntelligenceView } from './components/RepositoryIntelligenceView';
 import { AuthModal, AuthMode, AuthReason } from './components/AuthModal';
 import { SearchQuotaToast } from './components/SearchQuotaToast';
 
 import { Project, UserSession, ProfileEvaluation } from './types';
+import { RepositoryIntelligenceReport, ScanMode, UserProfilePreferences } from './types/repoIntelligenceTypes';
+import { startRepositoryAnalysis, pollRepositoryAnalysisStatus } from './services/repositoryIntelligenceClient';
+import { parseAndValidateGithubUrl } from './services/githubUrlParser';
 import { fetchGithubUserProfile } from './services/githubService';
 import { getCurrentSession, onAuthStateChange, signOut } from './services/authService';
 
@@ -74,6 +78,81 @@ export function App() {
   const [comparedProjects, setComparedProjects] = useState<Project[]>([]);
   const [savedProjects, setSavedProjects] = useState<Project[]>([]);
   const [privateEvaluations, setPrivateEvaluations] = useState<Project[]>([]);
+
+  // Repository Intelligence States
+  const [intelReport, setIntelReport] = useState<RepositoryIntelligenceReport | null>(null);
+  const [savedIntelligenceReports, setSavedIntelligenceReports] = useState<RepositoryIntelligenceReport[]>([]);
+  const [intelLoading, setIntelLoading] = useState(false);
+  const [intelStatus, setIntelStatus] = useState<string>('idle');
+  const [intelProgress, setIntelProgress] = useState(0);
+  const [intelStep, setIntelStep] = useState('');
+  const [intelErrorCode, setIntelErrorCode] = useState<string | undefined>(undefined);
+  const [intelErrorMessage, setIntelErrorMessage] = useState<string | undefined>(undefined);
+
+  const handleSaveReport = (report: RepositoryIntelligenceReport) => {
+    setSavedIntelligenceReports(prev => {
+      const exists = prev.some(r => r.id === report.id);
+      if (exists) {
+        return prev.filter(r => r.id !== report.id);
+      }
+      return [report, ...prev];
+    });
+  };
+
+  const handleAnalyzeRepositoryUrl = async (
+    url: string,
+    mode: ScanMode = 'standard',
+    profile?: UserProfilePreferences
+  ) => {
+    if (!handleSearchAttempt()) {
+      return;
+    }
+
+    setActiveTab('intelligence');
+    setIntelLoading(true);
+    setIntelStatus('validating');
+    setIntelProgress(10);
+    setIntelStep('Validating repository URL...');
+    setIntelErrorCode(undefined);
+    setIntelErrorMessage(undefined);
+
+    try {
+      const res = await startRepositoryAnalysis(url, mode, profile);
+      
+      if (res.error) {
+        setIntelStatus('failed');
+        setIntelProgress(0);
+        setIntelErrorCode(res.error.code);
+        setIntelErrorMessage(res.error.message);
+        setIntelLoading(false);
+
+        if (res.error.code === 'ANALYSIS_QUOTA_EXCEEDED') {
+          setAuthModalReason('limit_reached');
+          setAuthModalMode('signup');
+          setIsAuthModalOpen(true);
+        }
+        return;
+      }
+
+      if (res.report) {
+        setIntelReport(res.report);
+        setIntelStatus('completed');
+        setIntelProgress(100);
+        setIntelStep('Report ready.');
+      } else {
+        setIntelStatus(res.status);
+        setIntelProgress(res.progress || 50);
+        setIntelStep(res.currentStep || 'Processing scan job...');
+      }
+    } catch (err: any) {
+      setIntelStatus('failed');
+      setIntelProgress(0);
+      setIntelErrorCode('INTERNAL_ERROR');
+      setIntelErrorMessage(err.message || 'An unexpected analysis error occurred.');
+    } finally {
+      setIntelLoading(false);
+    }
+  };
 
   // Supabase Auth Session Listener
   useEffect(() => {
@@ -172,8 +251,13 @@ export function App() {
   };
 
   const handleSearchSubmit = (query: string) => {
-    setActiveSearchQuery(query);
-    setActiveTab('search');
+    const urlCheck = parseAndValidateGithubUrl(query);
+    if (urlCheck.valid) {
+      handleAnalyzeRepositoryUrl(query);
+    } else {
+      setActiveSearchQuery(query);
+      setActiveTab('search');
+    }
   };
 
   const handleSelectProject = (project: Project) => {
@@ -275,6 +359,24 @@ export function App() {
             searchCount={searchCount}
             onSearchAttempt={handleSearchAttempt}
             onOpenAuth={handleOpenAuth}
+            onAnalyzeUrl={handleAnalyzeRepositoryUrl}
+          />
+        )}
+
+        {activeTab === 'intelligence' && (
+          <RepositoryIntelligenceView
+            report={intelReport}
+            isLoading={intelLoading}
+            status={intelStatus}
+            progress={intelProgress}
+            currentStep={intelStep}
+            errorCode={intelErrorCode}
+            errorMessage={intelErrorMessage}
+            onAnalyzeUrl={handleAnalyzeRepositoryUrl}
+            onSaveReport={handleSaveReport}
+            isSaved={Boolean(intelReport && savedIntelligenceReports.some(r => r.id === intelReport.id))}
+            onOpenAuth={handleOpenAuth}
+            onGoBack={() => setActiveTab('landing')}
           />
         )}
 
@@ -333,9 +435,12 @@ export function App() {
             savedProjects={savedProjects}
             savedIdeaIds={userSession.savedIdeaIds}
             privateEvaluations={privateEvaluations}
+            savedIntelligenceReports={savedIntelligenceReports}
             onSelectProject={handleSelectProject}
             onRemoveSavedProject={(id) => handleToggleSaveProject(id)}
             onRemoveSavedIdea={handleToggleSaveIdea}
+            onSelectIntelligenceReport={(rep) => { setIntelReport(rep); setActiveTab('intelligence'); }}
+            onRemoveSavedReport={(id) => setSavedIntelligenceReports(prev => prev.filter(r => r.id !== id))}
             setActiveTab={setActiveTab}
           />
         )}
