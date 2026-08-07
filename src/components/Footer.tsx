@@ -13,9 +13,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
           
           <div className="col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-md bg-gh-accent flex items-center justify-center">
-                <GitBranch className="w-3.5 h-3.5 text-white" />
-              </div>
+              <img src="/logo.png" alt="GitScope Logo" className="w-7 h-7 rounded-md object-contain" />
               <span className="font-semibold text-sm text-gh-fg">GitScope</span>
             </div>
             <p className="text-xs text-gh-fgMuted leading-relaxed mb-3">

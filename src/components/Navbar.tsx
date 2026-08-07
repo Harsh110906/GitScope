@@ -52,9 +52,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setActiveTab('landing')}
             className="flex items-center gap-2.5 text-gh-fg hover:opacity-80 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-md bg-gh-accent flex items-center justify-center">
-              <GitBranch className="w-4.5 h-4.5 text-white" />
-            </div>
+            <img src="/logo.png" alt="GitScope Logo" className="w-8 h-8 rounded-md object-contain" />
             <span className="font-semibold text-base tracking-tight hidden sm:block">
               GitScope
             </span>

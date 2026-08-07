@@ -116,9 +116,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Top Header */}
         <div className="px-6 py-4 border-b border-gh-border flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-md bg-gh-accent/15 flex items-center justify-center text-gh-accent">
-              <Sparkles className="w-4 h-4" />
-            </div>
+            <img src="/logo.png" alt="GitScope Logo" className="w-7 h-7 rounded-md object-contain" />
             <span className="font-semibold text-sm text-gh-fg">
               {mode === 'signup' ? 'Join GitScope' : 'Sign in to GitScope'}
             </span>
