@@ -110,26 +110,27 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto">
-      <div className="w-full max-w-md bg-gh-canvas border border-gh-border rounded-lg shadow-2xl overflow-hidden my-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm overflow-y-auto">
+      <div className="w-full max-w-md bg-gh-canvas border border-gh-border rounded-lg shadow-2xl overflow-hidden my-auto max-h-[95vh] flex flex-col">
         
         {/* Top Header */}
-        <div className="px-6 py-4 border-b border-gh-border flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-gh-border flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="GitScope Logo" className="w-7 h-7 rounded-md object-contain" />
-            <span className="font-semibold text-sm text-gh-fg">
+            <img src="/logo.png" alt="GitScope Logo" className="w-6 h-6 sm:w-7 sm:h-7 rounded-md object-contain shrink-0" />
+            <span className="font-semibold text-xs sm:text-sm text-gh-fg">
               {mode === 'signup' ? 'Join GitScope' : 'Sign in to GitScope'}
             </span>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-gh-fgMuted hover:text-gh-fg rounded-md hover:bg-gh-card transition-colors"
+            className="p-1.5 text-gh-fgMuted hover:text-gh-fg rounded-md hover:bg-gh-card transition-colors active:scale-95 shrink-0"
+            aria-label="Close authentication modal"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 space-y-5">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
           
           {/* Limit Reached Banner */}
           {reason === 'limit_reached' && (

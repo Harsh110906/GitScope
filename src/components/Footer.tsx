@@ -23,10 +23,10 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
               <span className="text-gh-fgSubtle font-medium block mb-1">Customer Support & Feedback:</span>
               <a
                 href="mailto:gitscopesupport@gmail.com"
-                className="text-gh-accent hover:underline flex items-center gap-1.5 font-medium text-[12px]"
+                className="text-gh-accent hover:underline flex items-center gap-1.5 font-medium text-[12px] break-all"
               >
                 <Mail className="w-3.5 h-3.5 shrink-0" />
-                gitscopesupport@gmail.com
+                <span>gitscopesupport@gmail.com</span>
               </a>
             </div>
           </div>
@@ -49,7 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
             </ul>
           </div>
 
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <h4 className="text-xs font-semibold text-gh-fg mb-3 uppercase tracking-wider">Help & Support</h4>
             <div className="space-y-2 text-xs">
               <p className="text-gh-fgMuted leading-relaxed">
@@ -57,21 +57,21 @@ export const Footer: React.FC<FooterProps> = ({ setActiveTab }) => {
               </p>
               <a
                 href="mailto:gitscopesupport@gmail.com"
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-gh-accent hover:underline bg-gh-bg px-2.5 py-1.5 rounded border border-gh-borderMuted"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-gh-accent hover:underline bg-gh-bg px-2.5 py-1.5 rounded border border-gh-borderMuted break-all"
               >
-                <LifeBuoy className="w-3.5 h-3.5" />
-                gitscopesupport@gmail.com
+                <LifeBuoy className="w-3.5 h-3.5 shrink-0" />
+                <span>gitscopesupport@gmail.com</span>
               </a>
             </div>
           </div>
 
         </div>
 
-        <div className="pt-6 border-t border-gh-borderMuted flex flex-col sm:flex-row items-center justify-between text-xs text-gh-fgSubtle gap-3">
+        <div className="pt-6 border-t border-gh-borderMuted flex flex-col sm:flex-row items-center justify-between text-xs text-gh-fgSubtle gap-3 text-center sm:text-left">
           <p>© {new Date().getFullYear()} GitScope. Built for developers.</p>
           <div className="flex items-center gap-4">
             <a href="mailto:gitscopesupport@gmail.com" className="hover:text-gh-fg transition-colors flex items-center gap-1">
-              <Mail className="w-3 h-3" /> Contact Support (gitscopesupport@gmail.com)
+              <Mail className="w-3 h-3 shrink-0" /> Contact Support
             </a>
           </div>
         </div>

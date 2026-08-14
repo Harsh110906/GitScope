@@ -77,7 +77,7 @@ export const SearchQuotaToast: React.FC<SearchQuotaToastProps> = ({
     <div
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className={`fixed bottom-5 right-5 z-40 max-w-sm w-full transition-all duration-500 ease-out transform ${
+      className={`fixed bottom-4 left-3 right-3 sm:left-auto sm:right-5 sm:bottom-5 sm:max-w-sm z-40 transition-all duration-500 ease-out transform ${
         isVisible
           ? 'translate-y-0 opacity-100 scale-100'
           : 'translate-y-4 opacity-0 scale-95 pointer-events-none'

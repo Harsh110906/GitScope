@@ -29,9 +29,12 @@ export const SavedDashboardView: React.FC<SavedDashboardViewProps> = ({
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8 space-y-8">
       
       <div>
-        <h1 className="text-xl font-bold text-gh-fg flex items-center gap-2">
-          <Bookmark className="w-5 h-5 text-gh-fgMuted" /> Saved & History
-          <span className="text-xs text-gh-fgSubtle font-normal bg-gh-card px-2 py-0.5 rounded-full border border-gh-border">{totalItems} items</span>
+        <h1 className="text-xl font-bold text-gh-fg flex flex-wrap items-center gap-2">
+          <span className="flex items-center gap-2">
+            <Bookmark className="w-5 h-5 text-gh-fgMuted shrink-0" />
+            <span>Saved & History</span>
+          </span>
+          <span className="text-xs text-gh-fgSubtle font-normal bg-gh-card px-2 py-0.5 rounded-full border border-gh-border shrink-0">{totalItems} items</span>
         </h1>
         <p className="text-[13px] text-gh-fgMuted mt-0.5">Your bookmarked projects, saved ideas, intelligence reports, and private pre-check results.</p>
       </div>

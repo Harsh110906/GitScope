@@ -85,7 +85,7 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-6 space-y-5">
       
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold text-gh-fg flex items-center gap-2">
             Explore Projects
@@ -95,10 +95,10 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
           </h1>
           <p className="text-[13px] text-gh-fgMuted mt-0.5">Search by topic or paste a GitHub repository URL</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isAuthenticated && (
             <div className="flex items-center gap-1.5 px-2.5 py-1 bg-gh-bg border border-gh-borderMuted rounded-md text-xs text-gh-fgMuted">
-              <Lock className="w-3.5 h-3.5 text-gh-accent" />
+              <Lock className="w-3.5 h-3.5 text-gh-accent shrink-0" />
               <span>{remainingSearches} of 3 free searches left</span>
               {remainingSearches === 0 && (
                 <button
@@ -113,9 +113,11 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
           <div className="flex items-center gap-1 bg-gh-canvas border border-gh-border rounded-md p-0.5">
             <button onClick={() => setFilters({ ...filters, viewMode: 'grid' })}
               className={`p-1.5 rounded ${filters.viewMode === 'grid' ? 'bg-gh-card text-gh-fg' : 'text-gh-fgMuted hover:text-gh-fg'}`}
+              aria-label="Grid view"
             ><Grid className="w-4 h-4" /></button>
             <button onClick={() => setFilters({ ...filters, viewMode: 'list' })}
               className={`p-1.5 rounded ${filters.viewMode === 'list' ? 'bg-gh-card text-gh-fg' : 'text-gh-fgMuted hover:text-gh-fg'}`}
+              aria-label="List view"
             ><List className="w-4 h-4" /></button>
           </div>
         </div>
@@ -126,8 +128,8 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
         <div className="flex items-center gap-2 bg-gh-bg border border-gh-border rounded-md p-1.5 focus-within:border-gh-accent transition-colors">
           <Search className="w-4 h-4 text-gh-fgSubtle ml-2 shrink-0" />
           <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search projects..." className="flex-1 bg-transparent text-sm text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1" />
-          <button type="submit" disabled={isLoading} className="gh-btn-primary shrink-0">
+            placeholder="Search projects by keyword or repo URL..." className="flex-1 bg-transparent text-sm text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1 min-w-0" />
+          <button type="submit" disabled={isLoading} className="gh-btn-primary shrink-0 py-1.5 px-3">
             {isLoading ? <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : 'Search'}
           </button>
         </div>
@@ -136,7 +138,7 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
       {/* Intent Chips */}
       {intentChips.length > 1 && (
         <div className="flex flex-wrap items-center gap-1.5 text-xs">
-          <span className="text-gh-fgMuted font-medium mr-1 flex items-center gap-1"><Zap className="w-3 h-3" /> Related:</span>
+          <span className="text-gh-fgMuted font-medium mr-1 flex items-center gap-1 shrink-0"><Zap className="w-3 h-3 text-gh-accent" /> Related:</span>
           {intentChips.map((c, i) => (
             <span key={i} className="px-2 py-0.5 bg-gh-card border border-gh-border rounded-md text-gh-fgMuted font-mono text-[11px]">
               {c}
@@ -146,10 +148,10 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
       )}
 
       {/* Domain Tabs */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar">
+      <div className="flex items-center gap-1 overflow-x-auto pb-1 no-scrollbar touch-scroll">
         {domains.map(d => (
           <button key={d} onClick={() => setFilters({ ...filters, domain: d })}
-            className={`px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+            className={`px-2.5 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-colors shrink-0 ${
               filters.domain === d ? 'bg-gh-accent/15 text-gh-accent border border-gh-accent/30' : 'text-gh-fgMuted hover:text-gh-fg bg-gh-canvas border border-transparent hover:border-gh-border'
             }`}
           >{d}</button>
@@ -157,9 +159,9 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
       </div>
 
       {/* Filter/Sort Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 py-2.5 px-3 bg-gh-canvas border border-gh-border rounded-md text-[13px]">
-        <div className="flex items-center gap-3">
-          <label className="flex items-center gap-1.5 text-gh-fgMuted">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-2.5 px-3 bg-gh-canvas border border-gh-border rounded-md text-[13px]">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <label className="flex items-center gap-1.5 text-gh-fgMuted text-xs sm:text-[13px]">
             Difficulty:
             <select value={filters.difficulty} onChange={e => setFilters({ ...filters, difficulty: e.target.value })}
               className="gh-input text-xs py-1 px-2 cursor-pointer">
@@ -167,7 +169,7 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
               <option value="Intermediate">Intermediate</option><option value="Advanced">Advanced</option><option value="Expert">Expert</option>
             </select>
           </label>
-          <label className="flex items-center gap-1.5 text-gh-fgMuted">
+          <label className="flex items-center gap-1.5 text-gh-fgMuted text-xs sm:text-[13px]">
             Badge:
             <select value={filters.saturationBadge} onChange={e => setFilters({ ...filters, saturationBadge: e.target.value })}
               className="gh-input text-xs py-1 px-2 cursor-pointer">
@@ -176,8 +178,8 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
             </select>
           </label>
         </div>
-        <label className="flex items-center gap-1.5 text-gh-fgMuted">
-          <ArrowUpDown className="w-3.5 h-3.5" /> Sort:
+        <label className="flex items-center gap-1.5 text-gh-fgMuted text-xs sm:text-[13px]">
+          <ArrowUpDown className="w-3.5 h-3.5 shrink-0" /> Sort:
           <select value={filters.sortBy} onChange={e => setFilters({ ...filters, sortBy: e.target.value as any })}
             className="gh-input text-xs py-1 px-2 cursor-pointer font-medium text-gh-accent">
             <option value="relevance">Best Match</option><option value="score">Highest Score</option>
@@ -250,18 +252,20 @@ export const SearchDiscoveryView: React.FC<SearchDiscoveryViewProps> = ({
                 </div>
 
                 {/* Footer */}
-                <div className="pt-3 border-t border-gh-borderMuted flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-gh-fgMuted">
+                <div className="pt-3 border-t border-gh-borderMuted flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-3 text-xs text-gh-fgMuted shrink-0">
                     <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5" />{proj.stars.toLocaleString()}</span>
                     <span className="flex items-center gap-1"><GitFork className="w-3.5 h-3.5" />{proj.forks.toLocaleString()}</span>
                   </div>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button onClick={() => onCompareProject(proj)} title="Compare"
-                      className={`p-1.5 rounded-md border transition-colors ${compared ? 'bg-purple-400/10 text-purple-400 border-purple-400/30' : 'text-gh-fgMuted border-gh-border hover:text-gh-fg hover:bg-gh-card'}`}>
+                      className={`p-1.5 rounded-md border transition-colors ${compared ? 'bg-purple-400/10 text-purple-400 border-purple-400/30' : 'text-gh-fgMuted border-gh-border hover:text-gh-fg hover:bg-gh-card'}`}
+                      aria-label="Compare project">
                       <Layers className="w-3.5 h-3.5" />
                     </button>
                     <button onClick={() => onToggleSaveProject(proj.id)} title="Save"
-                      className={`p-1.5 rounded-md border transition-colors ${saved ? 'bg-gh-accent/10 text-gh-accent border-gh-accent/30' : 'text-gh-fgMuted border-gh-border hover:text-gh-fg hover:bg-gh-card'}`}>
+                      className={`p-1.5 rounded-md border transition-colors ${saved ? 'bg-gh-accent/10 text-gh-accent border-gh-accent/30' : 'text-gh-fgMuted border-gh-border hover:text-gh-fg hover:bg-gh-card'}`}
+                      aria-label="Save project">
                       <Bookmark className={`w-3.5 h-3.5 ${saved ? 'fill-current' : ''}`} />
                     </button>
                     <button onClick={() => onSelectProject(proj)} className="gh-btn-primary text-xs py-1 px-2.5">

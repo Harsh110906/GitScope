@@ -109,22 +109,22 @@ export const PrivatePreCheckView: React.FC<PrivatePreCheckViewProps> = ({ onSave
             <button onClick={() => setEvaluation(null)} className="gh-btn-secondary text-xs"><RotateCcw className="w-3.5 h-3.5" /> New Check</button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-              <div className="text-[11px] text-gh-fgSubtle uppercase">Score</div>
-              <div className="text-xl font-bold text-gh-fg">{evaluation.numericScore}/100</div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+              <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Score</div>
+              <div className="text-lg sm:text-xl font-bold text-gh-fg">{evaluation.numericScore}/100</div>
             </div>
-            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-              <div className="text-[11px] text-gh-fgSubtle uppercase">Rating</div>
-              <div className="text-xl font-bold text-yellow-400 flex items-center justify-center gap-1"><Star className="w-4 h-4 fill-yellow-400" />{evaluation.starRating}</div>
+            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+              <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Rating</div>
+              <div className="text-lg sm:text-xl font-bold text-yellow-400 flex items-center justify-center gap-1"><Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-yellow-400" />{evaluation.starRating}</div>
             </div>
-            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-              <div className="text-[11px] text-gh-fgSubtle uppercase">Domain Rank</div>
-              <div className="text-xl font-bold text-gh-accent">Top {100 - evaluation.domainPercentileRank}%</div>
+            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+              <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Domain Rank</div>
+              <div className="text-lg sm:text-xl font-bold text-gh-accent">Top {100 - evaluation.domainPercentileRank}%</div>
             </div>
-            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-              <div className="text-[11px] text-gh-fgSubtle uppercase">Deploy Ready</div>
-              <div className="text-xl font-bold text-gh-success">{evaluation.deployabilityScore}%</div>
+            <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+              <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Deploy Ready</div>
+              <div className="text-lg sm:text-xl font-bold text-gh-success">{evaluation.deployabilityScore}%</div>
             </div>
           </div>
 

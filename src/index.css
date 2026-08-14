@@ -3,20 +3,32 @@
 @tailwind utilities;
 
 /* ── GitHub-inspired Dark Theme Foundation ── */
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
 body {
   background-color: #0d1117;
   color: #e6edf3;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
   background-color: rgba(88, 166, 255, 0.3);
 }
 
-/* ── Scrollbars ── */
+/* ── Scrollbars & Mobile Touch ── */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #0d1117; }
 ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
 
 /* ── Utility classes ── */
 .gh-card {

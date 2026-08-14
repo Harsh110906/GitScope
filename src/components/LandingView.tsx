@@ -59,46 +59,48 @@ export const LandingView: React.FC<LandingViewProps> = ({
       
       {/* Hero */}
       <section className="border-b border-gh-border bg-gh-canvas">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-16 lg:py-24">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-12 lg:py-24">
           <div className="max-w-3xl">
-            <h1 className="text-3xl sm:text-5xl font-bold text-gh-fg tracking-tight leading-tight mb-4">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-gh-fg tracking-tight leading-tight mb-4">
               Find, analyze, and inspect
               <br />
               <span className="text-gh-accent">GitHub repositories</span> with AI Intelligence
             </h1>
 
-            <p className="text-gh-fgMuted text-base sm:text-lg leading-relaxed mb-8 max-w-2xl">
+            <p className="text-gh-fgMuted text-sm sm:text-base lg:text-lg leading-relaxed mb-6 sm:mb-8 max-w-2xl">
               GitScope Repository Intelligence generates multi-pillar reports covering documentation, code organization, testing maturity, maintenance activity, advisory security, and personalized contribution matching.
             </p>
 
             {/* Search */}
             <form onSubmit={handleSearch} className="mb-5 max-w-2xl">
-              <div className="flex items-center gap-2 bg-gh-bg border border-gh-border rounded-md p-1.5 focus-within:border-gh-accent transition-colors">
-                <Search className="w-4.5 h-4.5 text-gh-fgSubtle ml-2 shrink-0" />
-                <input
-                  type="text"
-                  value={queryInput}
-                  onChange={(e) => setQueryInput(e.target.value)}
-                  placeholder="Paste GitHub repository URL (e.g. facebook/react) or search topic..."
-                  className="flex-1 bg-transparent text-sm text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1.5"
-                />
+              <div className="flex flex-col sm:flex-row gap-2 bg-gh-bg border border-gh-border rounded-md p-1.5 focus-within:border-gh-accent transition-colors">
+                <div className="flex items-center gap-2 flex-1 px-2 py-1 sm:py-0">
+                  <Search className="w-4 h-4 text-gh-fgSubtle shrink-0" />
+                  <input
+                    type="text"
+                    value={queryInput}
+                    onChange={(e) => setQueryInput(e.target.value)}
+                    placeholder="Paste repo URL (e.g. facebook/react) or search..."
+                    className="w-full bg-transparent text-sm text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1"
+                  />
+                </div>
                 <button
                   type="submit"
-                  className="gh-btn-primary shrink-0"
+                  className="gh-btn-primary justify-center shrink-0 py-2 sm:py-1.5 px-4"
                 >
                   <Search className="w-3.5 h-3.5" />
-                  Analyze / Search
+                  <span>Analyze / Search</span>
                 </button>
               </div>
             </form>
 
             <div className="flex flex-wrap items-center gap-2 text-[13px]">
-              <span className="text-gh-fgSubtle">Try repos:</span>
+              <span className="text-gh-fgSubtle text-xs">Try repos:</span>
               {['https://github.com/facebook/react', 'https://github.com/expressjs/express', 'AI chatbot'].map((t, i) => (
                 <button
                   key={i}
                   onClick={() => handleTopicClick(t)}
-                  className="px-2.5 py-1 rounded-md bg-gh-card border border-gh-border text-gh-fgMuted hover:text-gh-accent hover:border-gh-accent transition-colors font-mono text-xs"
+                  className="px-2.5 py-1 rounded-md bg-gh-card border border-gh-border text-gh-fgMuted hover:text-gh-accent hover:border-gh-accent transition-colors font-mono text-xs max-w-[260px] truncate"
                 >
                   {t.replace('https://github.com/', '')}
                 </button>

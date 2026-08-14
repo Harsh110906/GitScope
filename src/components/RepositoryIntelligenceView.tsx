@@ -90,41 +90,43 @@ export const RepositoryIntelligenceView: React.FC<RepositoryIntelligenceViewProp
       
       {/* Search Header Bar */}
       <div className="gh-card p-4 space-y-3">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
           <div>
-            <h1 className="text-xl font-bold text-gh-fg flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-gh-accent" />
+            <h1 className="text-lg sm:text-xl font-bold text-gh-fg flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-gh-accent shrink-0" />
               Repository Intelligence Report
             </h1>
             <p className="text-xs text-gh-fgMuted">Deep multi-pillar discovery, documentation analysis & contribution readiness</p>
           </div>
 
           {/* Quick URL Submit Form */}
-          <form onSubmit={handleSubmit} className="flex items-center gap-2 flex-1 max-w-xl">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1 max-w-xl">
             <div className="flex-1 flex items-center gap-2 bg-gh-bg border border-gh-border rounded-md px-2.5 py-1 focus-within:border-gh-accent">
               <GitBranch className="w-4 h-4 text-gh-fgSubtle shrink-0" />
               <input
                 type="text"
                 value={urlInput}
                 onChange={(e) => setUrlInput(e.target.value)}
-                placeholder="Paste GitHub repository URL (e.g. facebook/react)..."
-                className="w-full bg-transparent text-xs text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1"
+                placeholder="Paste repo URL (e.g. facebook/react)..."
+                className="w-full bg-transparent text-xs text-gh-fg focus:outline-none placeholder:text-gh-fgSubtle py-1 min-w-0"
               />
             </div>
             
-            <select
-              value={scanMode}
-              onChange={(e) => setScanMode(e.target.value as ScanMode)}
-              className="gh-input text-xs py-1 px-2 shrink-0 cursor-pointer"
-            >
-              <option value="quick">Quick Scan</option>
-              <option value="standard">Standard Scan</option>
-              <option value="deep">Deep Scan</option>
-            </select>
+            <div className="flex items-center gap-2">
+              <select
+                value={scanMode}
+                onChange={(e) => setScanMode(e.target.value as ScanMode)}
+                className="gh-input text-xs py-1 px-2 flex-1 sm:flex-none cursor-pointer"
+              >
+                <option value="quick">Quick Scan</option>
+                <option value="standard">Standard Scan</option>
+                <option value="deep">Deep Scan</option>
+              </select>
 
-            <button type="submit" className="gh-btn-primary shrink-0 text-xs py-1 px-3">
-              Analyze
-            </button>
+              <button type="submit" className="gh-btn-primary shrink-0 text-xs py-1.5 px-3.5 justify-center">
+                Analyze
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -134,19 +136,20 @@ export const RepositoryIntelligenceView: React.FC<RepositoryIntelligenceViewProp
         <div className="space-y-6">
           
           {/* 1. Repository Header Card */}
-          <div className="gh-card p-6 space-y-4 border-l-4 border-l-gh-accent">
+          <div className="gh-card p-4 sm:p-6 space-y-4 border-l-4 border-l-gh-accent">
             <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-4">
               
-              <div className="space-y-2">
+              <div className="space-y-2 min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
                   {report.metadata.ownerAvatarUrl && (
-                    <img src={report.metadata.ownerAvatarUrl} alt={report.owner} className="w-7 h-7 rounded-full border border-gh-border" />
+                    <img src={report.metadata.ownerAvatarUrl} alt={report.owner} className="w-7 h-7 rounded-full border border-gh-border shrink-0" />
                   )}
                   <span className="text-sm font-mono text-gh-fgSubtle">{report.owner} /</span>
-                  <h2 className="text-2xl font-bold text-gh-fg tracking-tight">{report.repositoryName}</h2>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gh-fg tracking-tight break-all">{report.repositoryName}</h2>
                   
                   <a href={report.repositoryUrl} target="_blank" rel="noreferrer"
-                    className="text-gh-fgSubtle hover:text-gh-accent p-1 transition-colors">
+                    className="text-gh-fgSubtle hover:text-gh-accent p-1 transition-colors"
+                    aria-label="Open repository on GitHub">
                     <ExternalLink className="w-4 h-4" />
                   </a>
 
@@ -178,7 +181,7 @@ export const RepositoryIntelligenceView: React.FC<RepositoryIntelligenceViewProp
               </div>
 
               {/* Action Toolbar */}
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-wrap items-center gap-2 shrink-0">
                 {onSaveReport && (
                   <button
                     onClick={() => onSaveReport(report)}
@@ -206,20 +209,20 @@ export const RepositoryIntelligenceView: React.FC<RepositoryIntelligenceViewProp
             {/* Quick Metrics Bar */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-3 border-t border-gh-borderMuted text-xs text-gh-fgMuted">
               <div className="flex items-center gap-1.5">
-                <Star className="w-4 h-4 text-yellow-400" />
+                <Star className="w-4 h-4 text-yellow-400 shrink-0" />
                 <span className="font-semibold text-gh-fg">{report.metadata.stars.toLocaleString()}</span> stars
               </div>
               <div className="flex items-center gap-1.5">
-                <GitFork className="w-4 h-4 text-gh-fgSubtle" />
+                <GitFork className="w-4 h-4 text-gh-fgSubtle shrink-0" />
                 <span className="font-semibold text-gh-fg">{report.metadata.forks.toLocaleString()}</span> forks
               </div>
               <div className="flex items-center gap-1.5">
-                <AlertCircle className="w-4 h-4 text-gh-warning" />
+                <AlertCircle className="w-4 h-4 text-gh-warning shrink-0" />
                 <span className="font-semibold text-gh-fg">{report.metadata.openIssues.toLocaleString()}</span> open issues
               </div>
-              <div className="flex items-center gap-1.5 font-mono text-[11px]">
-                <GitBranch className="w-4 h-4 text-gh-accent" />
-                <span>{report.defaultBranch} ({report.analyzedCommitSha.substring(0, 7)})</span>
+              <div className="flex items-center gap-1.5 font-mono text-[11px] truncate">
+                <GitBranch className="w-4 h-4 text-gh-accent shrink-0" />
+                <span className="truncate">{report.defaultBranch} ({report.analyzedCommitSha.substring(0, 7)})</span>
               </div>
             </div>
           </div>
@@ -439,28 +442,26 @@ export const RepositoryIntelligenceView: React.FC<RepositoryIntelligenceViewProp
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               {report.contributionGuide.personalizedMatches?.map((match) => (
                 <div key={match.id} className="p-3.5 bg-gh-bg border border-gh-borderMuted rounded-md space-y-2">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <span className="font-semibold text-gh-fg">{match.title}</span>
-                    <span className="text-[11px] font-bold text-gh-success bg-gh-success/10 px-2 py-0.5 rounded border border-gh-success/20">
+                    <span className="text-[11px] font-bold text-gh-success bg-gh-success/10 px-2 py-0.5 rounded border border-gh-success/20 shrink-0">
                       {match.matchScore}% Match
                     </span>
                   </div>
 
                   <p className="text-gh-fgMuted">{match.explanation}</p>
 
-                  <div className="flex items-center justify-between text-[11px] text-gh-fgSubtle pt-2 border-t border-gh-borderMuted">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11px] text-gh-fgSubtle pt-2 border-t border-gh-borderMuted">
                     <span>Est. Effort: <strong className="text-gh-fg">{match.estimatedEffort}</strong></span>
-                    <span>Files: <code className="text-gh-accent">{match.suggestedFiles.join(', ')}</code></span>
+                    <span className="break-all">Files: <code className="text-gh-accent">{match.suggestedFiles.join(', ')}</code></span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="p-3 bg-gh-bg rounded-md text-xs text-gh-fgMuted flex items-center justify-between">
-              <span className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-gh-accent" />
-                First step to contribute: {report.contributionGuide.firstStep}
-              </span>
+            <div className="p-3 bg-gh-bg rounded-md text-xs text-gh-fgMuted flex items-start gap-2">
+              <Zap className="w-4 h-4 text-gh-accent shrink-0 mt-0.5" />
+              <span>First step to contribute: <strong className="text-gh-fg">{report.contributionGuide.firstStep}</strong></span>
             </div>
           </div>
 

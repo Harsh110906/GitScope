@@ -41,20 +41,20 @@ export const ProjectSuggestionsView: React.FC<ProjectSuggestionsViewProps> = ({
 
       {/* Filters */}
       <div className="space-y-2">
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar touch-scroll">
           <span className="text-xs text-gh-fgSubtle shrink-0 mr-1">Domain:</span>
           {domainList.map(d => (
             <button key={d} onClick={() => setSelDomain(d)}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors shrink-0 ${
                 selDomain === d ? 'bg-gh-accent/15 text-gh-accent border border-gh-accent/30' : 'text-gh-fgMuted hover:text-gh-fg bg-gh-canvas border border-transparent hover:border-gh-border'
               }`}>{d}</button>
           ))}
         </div>
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar touch-scroll">
           <span className="text-xs text-gh-fgSubtle shrink-0 mr-1">Badge:</span>
           {badgeList.map(b => (
             <button key={b} onClick={() => setSelBadge(b)}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors ${
+              className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition-colors shrink-0 ${
                 selBadge === b ? 'bg-gh-card text-gh-fg border border-gh-border' : 'text-gh-fgMuted hover:text-gh-fg bg-gh-canvas border border-transparent hover:border-gh-border'
               }`}>{b}</button>
           ))}

@@ -14,16 +14,19 @@ export const EvidenceDrawer: React.FC<EvidenceDrawerProps> = ({ evidenceItems, s
     <div className="gh-card p-4 space-y-3">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between text-left text-sm font-semibold text-gh-fg hover:text-gh-accent transition-colors"
+        className="w-full flex items-center justify-between text-left text-sm font-semibold text-gh-fg hover:text-gh-accent transition-colors gap-2"
+        aria-expanded={isOpen}
       >
-        <div className="flex items-center gap-2">
-          <FileCode className="w-4 h-4 text-gh-accent" />
-          <span>Verifiable Repository Evidence & Scan Scope</span>
-          <span className="text-xs font-normal text-gh-fgSubtle bg-gh-bg px-2 py-0.5 rounded border border-gh-border">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
+          <div className="flex items-center gap-2">
+            <FileCode className="w-4 h-4 text-gh-accent shrink-0" />
+            <span>Verifiable Repository Evidence</span>
+          </div>
+          <span className="text-xs font-normal text-gh-fgSubtle bg-gh-bg px-2 py-0.5 rounded border border-gh-border shrink-0">
             {evidenceItems.length} facts verified
           </span>
         </div>
-        {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+        {isOpen ? <ChevronUp className="w-4 h-4 shrink-0" /> : <ChevronDown className="w-4 h-4 shrink-0" />}
       </button>
 
       {isOpen && (

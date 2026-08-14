@@ -34,12 +34,13 @@ export const ProjectCompareMatrix: React.FC<ProjectCompareMatrixProps> = ({
   return (
     <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8 space-y-6">
       
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold text-gh-fg flex items-center gap-2">
-          <Layers className="w-5 h-5 text-gh-fgMuted" /> Compare Projects
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="text-lg sm:text-xl font-bold text-gh-fg flex items-center gap-2">
+          <Layers className="w-5 h-5 text-gh-fgMuted shrink-0" />
+          <span>Compare Projects</span>
           <span className="text-xs text-gh-fgSubtle font-normal">({comparedProjects.length} / 3)</span>
         </h1>
-        <button onClick={onClose} className="gh-btn-secondary text-xs">
+        <button onClick={onClose} className="gh-btn-secondary text-xs py-1.5 px-3">
           <X className="w-3.5 h-3.5" /> Close
         </button>
       </div>
@@ -53,9 +54,9 @@ export const ProjectCompareMatrix: React.FC<ProjectCompareMatrixProps> = ({
       ) : (
         <>
           {/* Radar Chart */}
-          <div className="gh-card p-5">
+          <div className="gh-card p-4 sm:p-5">
             <h3 className="text-xs font-semibold text-gh-fgMuted uppercase text-center mb-2">Quality Radar</h3>
-            <div className="h-72 sm:h-80">
+            <div className="h-64 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <RadarChart data={radarData}>
                   <PolarGrid stroke="#30363d" />

@@ -74,23 +74,25 @@ export const ProfileAnalyzerView: React.FC<ProfileAnalyzerViewProps> = ({
         <div className="space-y-5">
           
           {/* Profile Card */}
-          <div className="gh-card p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-            <div className="flex items-center gap-4">
+          <div className="gh-card p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-5">
+            <div className="flex items-start sm:items-center gap-3.5 sm:gap-4 min-w-0">
               <img src={profile.avatarUrl} alt={profile.username}
-                className="w-16 h-16 rounded-full border-2 border-gh-border object-cover" />
-              <div>
-                <h2 className="font-bold text-lg text-gh-fg">{profile.name}</h2>
-                <p className="text-xs text-gh-fgMuted font-mono">@{profile.username}</p>
-                <p className="text-xs text-gh-fgMuted mt-1 max-w-md line-clamp-1">{profile.bio}</p>
-                <div className="flex items-center gap-3 text-xs text-gh-fgSubtle mt-1.5 font-mono">
+                className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-2 border-gh-border object-cover shrink-0" />
+              <div className="min-w-0">
+                <h2 className="font-bold text-base sm:text-lg text-gh-fg truncate">{profile.name}</h2>
+                <p className="text-xs text-gh-fgMuted font-mono truncate">@{profile.username}</p>
+                <p className="text-xs text-gh-fgMuted mt-1 max-w-md line-clamp-2">{profile.bio}</p>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-gh-fgSubtle mt-1.5 font-mono">
                   <span>{profile.publicRepos} repos</span>
+                  <span>·</span>
                   <span>{profile.followers} followers</span>
+                  <span>·</span>
                   <span>{profile.totalStars.toLocaleString()} stars</span>
                 </div>
               </div>
             </div>
-            <div className="gh-card p-4 text-center shrink-0 min-w-[160px]">
-              <div className="text-[11px] text-gh-fgSubtle uppercase mb-1">Developer Level</div>
+            <div className="gh-card p-3 sm:p-4 text-center shrink-0 w-full sm:w-auto min-w-[150px]">
+              <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase mb-1">Developer Level</div>
               <div className="text-sm font-bold text-gh-accent mb-0.5">{profile.developerLevel}</div>
               <span className="gh-badge bg-gh-accent/10 text-gh-accent border border-gh-accent/20">Top {100 - profile.globalPercentile}%</span>
             </div>

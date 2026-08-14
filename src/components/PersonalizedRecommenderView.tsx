@@ -49,22 +49,22 @@ export const PersonalizedRecommenderView: React.FC<PersonalizedRecommenderViewPr
       </div>
 
       {/* Profile Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-          <div className="text-[11px] text-gh-fgSubtle uppercase">Level</div>
-          <div className="font-bold text-gh-accent">{profile.developerLevel}</div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+          <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Level</div>
+          <div className="font-bold text-xs sm:text-sm text-gh-accent truncate">{profile.developerLevel}</div>
         </div>
-        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-          <div className="text-[11px] text-gh-fgSubtle uppercase">Profile Score</div>
-          <div className="text-xl font-bold text-gh-fg">{profile.overallScore}<span className="text-xs font-normal text-gh-fgMuted">/100</span></div>
+        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+          <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Profile Score</div>
+          <div className="text-lg sm:text-xl font-bold text-gh-fg">{profile.overallScore}<span className="text-xs font-normal text-gh-fgMuted">/100</span></div>
         </div>
-        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-          <div className="text-[11px] text-gh-fgSubtle uppercase">Percentile</div>
-          <div className="font-bold text-gh-success">Top {100 - profile.globalPercentile}%</div>
+        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+          <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Percentile</div>
+          <div className="font-bold text-xs sm:text-sm text-gh-success">Top {100 - profile.globalPercentile}%</div>
         </div>
-        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3 text-center">
-          <div className="text-[11px] text-gh-fgSubtle uppercase">Tech Diversity</div>
-          <div className="text-xl font-bold text-gh-done">{profile.qualitySignals.techDiversityScore}%</div>
+        <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-2.5 sm:p-3 text-center">
+          <div className="text-[10px] sm:text-[11px] text-gh-fgSubtle uppercase">Tech Diversity</div>
+          <div className="text-lg sm:text-xl font-bold text-gh-done">{profile.qualitySignals.techDiversityScore}%</div>
         </div>
       </div>
 
