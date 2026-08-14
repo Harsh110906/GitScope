@@ -62,6 +62,24 @@ body {
   color: #6e7681;
 }
 
+/* Prevent iOS Safari automatic page zooming when focusing inputs */
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="search"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Optimize touch tap experience */
+button, a, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
 .gh-btn-primary {
   display: inline-flex;
   align-items: center;

@@ -83,7 +83,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             <div className="bg-gh-bg border border-gh-borderMuted rounded-md p-3.5 sm:p-4 h-64">
               <h4 className="text-xs font-semibold text-gh-fgMuted uppercase mb-1 text-center">Quality Breakdown</h4>
               <ResponsiveContainer width="100%" height="90%">
-                <RadarChart data={radarData}>
+                <RadarChart data={radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
                   <PolarGrid stroke="#30363d" />
                   <PolarAngleAxis dataKey="subject" stroke="#8b949e" tick={{ fill: '#8b949e', fontSize: 10 }} />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#21262d" />

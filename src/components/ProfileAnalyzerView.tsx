@@ -124,9 +124,9 @@ export const ProfileAnalyzerView: React.FC<ProfileAnalyzerViewProps> = ({
               <h3 className="text-xs font-semibold text-gh-fgMuted uppercase mb-3 flex items-center gap-1"><Code className="w-3.5 h-3.5" /> Top Languages</h3>
               <div className="h-44">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={profile.topLanguages} layout="vertical">
+                  <BarChart data={profile.topLanguages} layout="vertical" margin={{ top: 5, right: 15, bottom: 5, left: 5 }}>
                     <XAxis type="number" domain={[0, 100]} stroke="#30363d" tick={{ fontSize: 10, fill: '#8b949e' }} />
-                    <YAxis type="category" dataKey="name" stroke="#30363d" tick={{ fontSize: 11, fill: '#e6edf3' }} width={90} />
+                    <YAxis type="category" dataKey="name" stroke="#30363d" tick={{ fontSize: 11, fill: '#e6edf3' }} width={75} />
                     <Tooltip contentStyle={{ backgroundColor: '#161b22', borderColor: '#30363d', borderRadius: '6px', fontSize: '12px', color: '#e6edf3' }} />
                     <Bar dataKey="percentage" fill="#58a6ff" radius={[0, 3, 3, 0]} />
                   </BarChart>

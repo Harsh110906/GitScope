@@ -58,9 +58,9 @@ export const ProjectCompareMatrix: React.FC<ProjectCompareMatrixProps> = ({
             <h3 className="text-xs font-semibold text-gh-fgMuted uppercase text-center mb-2">Quality Radar</h3>
             <div className="h-64 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={radarData}>
+                <RadarChart data={radarData} margin={{ top: 10, right: 25, bottom: 10, left: 25 }}>
                   <PolarGrid stroke="#30363d" />
-                  <PolarAngleAxis dataKey="subject" stroke="#8b949e" tick={{ fill: '#8b949e', fontSize: 11 }} />
+                  <PolarAngleAxis dataKey="subject" stroke="#8b949e" tick={{ fill: '#8b949e', fontSize: 10 }} />
                   <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#21262d" />
                   {comparedProjects.map((p, i) => (
                     <Radar key={p.id} name={p.name} dataKey={`project${i}`} stroke={CHART_COLORS[i]} fill={CHART_COLORS[i]} fillOpacity={0.12} />
